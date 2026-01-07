@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ config.title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      background: #240109;
+      color: #e5e5e5;
+      font-family: system-ui, monospace;
+      max-width: 720px;
+      margin: 4rem auto;
+      padding: 0 1rem;
+      line-height: 1.6;
+      cursor: url('/images/cursor.png'), auto;
+      text-align: justify;
+    }
+    a {
+      color: #ffffff;
+      text-decoration: none;
+    }
+    a:hover {
+      /* text-decoration: underline; */
+      cursor: url('/images/cursor-hover.png'), pointer;
+    }
+    nav {
+      margin-bottom: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav a {
+      margin-right: 1rem;
+    }
+    img {
+      border-radius: 4px;
+    }
+    .profile-img {
+        width: 180px;
+        height: 180px;
+        display: block;
+        margin: 0 auto 1.5rem auto;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <a href="/">pranamya g kulal ⋆. 𐙚 ˚</a>
+    <div>
+      <a href="/experience/">Experience</a>
+      <a href="/projects/">Projects</a>
+      <a href="/publications/">Publications</a>
+      <a href="/contact/">Contact</a>
+    </div>
+  </nav>
+  
+  {% block content %}{% endblock %}
+</body>
+</html>
