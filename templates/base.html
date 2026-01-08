@@ -6,59 +6,248 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
     body {
+      display: flex;
+      flex-direction: column;
       background: #240109;
       color: #e5e5e5;
       font-family: system-ui, monospace;
-      max-width: 720px;
-      margin: 4rem auto;
-      padding: 0 1rem;
-      line-height: 1.6;
       cursor: url('/images/cursor.png'), auto;
-      text-align: justify;
     }
+
+    .page-wrap {
+      max-width: 720px;
+      width: 100%;
+      margin: 4rem auto 0 auto;
+      padding: 0 1rem;
+      text-align: justify;
+      line-height: 1.6;
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3rem;
+      width: 100%;
+    }
+
+    .brand {
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
     a {
       color: #ffffff;
       text-decoration: none;
     }
+
     a:hover {
-      /* text-decoration: underline; */
       cursor: url('/images/cursor-hover.png'), pointer;
     }
-    nav {
-      margin-bottom: 3rem;
+
+    .nav-links {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 1rem;
     }
-    nav a {
-      margin-right: 1rem;
-    }
+
     img {
       border-radius: 4px;
+      max-width: 100%;
     }
+
     .profile-img {
-        width: 180px;
-        height: 180px;
+      width: 300px;
+      height: auto;
+      display: block;
+      margin: 0 auto 1.5rem auto;
+      object-fit: cover;
+      max-width: 100%;
+    }
+
+    /* Hamburger toggle base */
+
+    #nav-toggle {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .hamburger {
+      display: none;
+      width: 24px;
+      height: 18px;
+      position: fixed;      /* pin to viewport */
+      top: 16px;            /* top-right */
+      right: 16px;
+      z-index: 1000;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0 15px 0 0;
+    }
+
+    .hamburger-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #fff;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .hamburger-line:nth-child(1) {
+      top: 0;
+    }
+
+    .hamburger-line:nth-child(2) {
+      top: 8px;
+    }
+
+    .hamburger-line:nth-child(3) {
+      top: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .navbar {
+        justify-content: flex-start;
+      }
+
+      .brand {
+        margin-right: 40px; 
+      }
+
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(36, 1, 9, 0.95); /* glassmorphism: dark bg with high opacity */
+        backdrop-filter: blur(20px);      /* glass effect */
+        -webkit-backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        margin: 0;
+        padding: 2rem;
+        z-index: 999;
+        animation: slideIn 0.3s ease-out;
+      }
+
+      .nav-links a {
+        font-size: 1.2rem;
+        opacity: 0.95;
+        backdrop-filter: blur(10px);
+        transition: opacity 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        opacity: 1;
+      }
+
+      .hamburger {
         display: block;
-        margin: 0 auto 1.5rem auto;
-        border-radius: 50%;
-        object-fit: cover;
+      }
+
+      /* Show menu when checked */
+      #nav-toggle:checked ~ .nav-links {
+        display: flex;
+      }
+
+      /* Animate hamburger into X in-place */
+      #nav-toggle:checked + label .hamburger-line:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+
+      #nav-toggle:checked + label .hamburger-line:nth-child(2) {
+        opacity: 0;
+      }
+
+      #nav-toggle:checked + label .hamburger-line:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+
+      /* Slide-in animation for menu */
+      @keyframes slideIn {
+        from {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+    }
+
+    /* Footer sticky at bottom */
+
+    .site-footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid #3a0a15;
+      font-size: 0.85rem;
+      color: #aaa;
+      text-align: center;
+      flex-shrink: 0;
+      width: 100%;
+    }
+
+    .site-footer a {
+      color: #ccc;
+    }
+
+    .site-footer a:hover {
+      color: #fff;
     }
   </style>
 </head>
 
 <body>
-  <nav>
-    <a href="/">pranamya g kulal ⋆. 𐙚 ˚</a>
-    <div>
-      <a href="/experience/">Experience</a>
-      <a href="/projects/">Projects</a>
-      <a href="/publications/">Publications</a>
-      <a href="/contact/">Contact</a>
-    </div>
-  </nav>
-  
-  {% block content %}{% endblock %}
+  <div class="page-wrap">
+    <nav class="navbar">
+      <a class="brand" href="/">pranamya g kulal ⋆. 𐙚 ˚</a>
+      <input type="checkbox" id="nav-toggle" aria-label="Toggle navigation">
+      <label for="nav-toggle" class="hamburger">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </label>
+
+      <div class="nav-links">
+        <a href="/experience/">experience</a>
+        <a href="/projects/">projects</a>
+        <a href="/publications/">research</a>
+        <a href="/contact/">contact</a>
+      </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+  </div>
+
+  <footer class="site-footer">
+    <p>
+      © {{ now() | date(format="%Y") }} Pranamya G Kulal ·
+    </p>
+  </footer>
 </body>
 </html>
